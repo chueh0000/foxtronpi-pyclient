@@ -161,7 +161,7 @@ class FoxPiWriteDID:
             return None
             
     def Driving_Ctrl_toFF(self) -> bytes:#write the Driving_Ctrl signal to 0xFF (default value)
-        
+
         try:
 
             data_toFF = bytes([0xff]*21) # 21 bytes of 0xFF
@@ -179,4 +179,26 @@ class FoxPiWriteDID:
 
         except Exception as e:#Print an error message if an error occurs
             print(f"Error processing: {e}")
-            return None  
+            return None
+
+    def Driving_Ctrl_toZero(self) -> bytes:#write the Driving_Ctrl signal to 0x00
+
+        try:
+
+            data_toZero = bytes([0x00]*21) # 21 bytes of 0x00
+            print(f"Processed input: {data_toZero}")
+
+            #Change Diagnostic Session to Extended DiagnosticSession
+            response = self.client.change_session(DiagnosticSessionControl.Session.extendedDiagnosticSession)
+            response = self.client.unlock_security_access(1)#Set the security_access key=1
+            response = self.client.write_data_by_identifier(0x1001, data_toZero)#write the previously merged_bytes to DID(0x1001)
+
+
+            self.debug_print(f"The response sevice is {response.service_data}, data is {response.data.hex()}")
+
+            return data_toZero
+
+        except Exception as e:#Print an error message if an error occurs
+            print(f"Error processing: {e}")
+            return None
+  
