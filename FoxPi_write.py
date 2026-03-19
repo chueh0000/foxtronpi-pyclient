@@ -201,4 +201,16 @@ class FoxPiWriteDID:
         except Exception as e:#Print an error message if an error occurs
             print(f"Error processing: {e}")
             return None
+
+    def FoxPi_Reset_Sequence(self): # Execute the 5-step reset sequence
+        try:
+            self.debug_print("Starting FoxPi Reset Sequence... Make sure the vehicle is in Park!")
+            self.FoxPi_Ctrl_Enable_Switch([1])
+            self.Driving_Ctrl_toFF()
+            self.Driving_Ctrl_toZero()
+            self.FoxPi_Ctrl_Enable_Switch([0])
+            self.FoxPi_Ctrl_Enable_Switch([1])
+            self.debug_print("FoxPi Reset Sequence completed.")
+        except Exception as e:
+            print(f"Error in Reset Sequence: {e}")
   

@@ -18,8 +18,7 @@ with Client(uds_connection, request_timeout=4, config=get_uds_client()) as clien
         1: FoxPi.FoxPi_Driving_Ctrl,
         2: FoxPi.FoxPi_Lamp_Ctrl,
         3: FoxPi.FoxPi_Ctrl_Enable_Switch,
-        4: FoxPi.Driving_Ctrl_toFF,
-        5: FoxPi.Driving_Ctrl_toZero
+        4: FoxPi.FoxPi_Reset_Sequence
     }
 
     WID_param = {
@@ -34,22 +33,20 @@ with Client(uds_connection, request_timeout=4, config=get_uds_client()) as clien
             "Rear_Fog_Lamp_Control_Enable","Rear_Fog_Lamp","Amblight_Control_Enable","Control area",
             "RGB 64 Color","Bright adjustment","Breathing and Alert Mode"],
         3: ["Ctrl_Enable_Switch"],
-        4: [],
-        5: []
+        4: []
     }
 
     default_value = {
         1: [-10, 1, 255.875, 1, 1, 1, -900, 1, 1, -10, 1, 4, 7, 20],
         2: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,63,100,7],
         3: [0],
-        4: [],
-        5: []
+        4: []
     }
 
     
     while True:
 
-        print(f"\n\033[33mPlease input the number(1-5) of the DID you want to write:\033[0m")
+        print(f"\n\033[33mPlease input the number(1-4) of the DID you want to write:\033[0m")
         for i,j in WID_map.items():
             print(f"{i} = {j.__name__}")
         
@@ -63,7 +60,7 @@ with Client(uds_connection, request_timeout=4, config=get_uds_client()) as clien
         if  WID==0:
             break
         elif not excute:
-            print("\033[91mInvalid input. Please enter a number between 1 to 5.\033[0m")
+            print("\033[91mInvalid input. Please enter a number between 1 to 4.\033[0m")
             continue
 
         defult = default_value.get(WID,[])
