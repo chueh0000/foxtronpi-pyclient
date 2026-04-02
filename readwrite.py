@@ -37,10 +37,18 @@ def main():
         # 2. Execute the Reset Sequence First
         print("\n--- Step 1: Executing Reset Sequence ---")
         FoxPi_Write.FoxPi_Reset_Sequence()
-        time.sleep(1) 
+        time.sleep(1)
         
-        # 3. Setup the Continuous Driving Loop
-        print("\n--- Step 2: Starting Continuous Driving Control ---")
+        # 3. Put Vehicle in Drive
+        print("\n--- Step 2: Putting Vehicle in Drive then Run Reset Sequence again ---")
+        put_in_Drive_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 0]
+        FoxPi_Write.FoxPi_Driving_Ctrl(put_in_Drive_values)
+        time.sleep(1)
+        FoxPi_Write.FoxPi_Reset_Sequence()
+        time.sleep(1)
+        
+        # 4. Setup the Continuous Driving Loop
+        print("\n--- Step 3: Starting Continuous Driving Control ---")
         listener_thread = threading.Thread(target=listen_for_enter, daemon=True)
         listener_thread.start()
         
@@ -57,25 +65,28 @@ def main():
             FoxPi_Write.FoxPi_Driving_Ctrl(default_driving_values)
             
             # Add a tiny delay to give the ECU time to process the write before we read
-            time.sleep(0.5) 
+            time.sleep(0.1) 
             
             # --- READ ---
             try:
                 # Fetch the dictionary of parsed physical values
                 current_status = FoxPi_Read.FoxPi_Driving_Ctrl()
+                time.sleep(0.1)
+                current_status = FoxPi_Read.FoxPi_WheelSpeed()
                 
                 # Print a clean, formatted summary of the key driving parameters
-                print(f"\033[96m[Vehicle Status]\033[0m Speed: {current_status['Spd']} kph | "
-                      f"Acc: {current_status['Acc']} | "
-                      f"Acc_A: {current_status['Acc_A']}")
+                print(f"\033[96m[Vehicle Status]\033[0m TargetSpd: {current_status['Spd']} kph | "
+                      f"TargetSpd_A: {current_status['Spd_A']} | "
+                      f"RR_WhlSpeed: {current_status['RR_WhlSpeed']} | "
+                      f"RR_WhlSpeed_V: {current_status['RR_WhlSpeed_V']}")
             except Exception as e:
                 print(f"\033[91mError reading data: {e}\033[0m")
             
             # Delay before the next cycle
             time.sleep(0.1) 
             
-        # 4. Turn off control enable switch after the loop breaks
-        print("\n--- Step 3: Stop Triggered. Disabling Control ---")
+        # 5. Turn off control enable switch after the loop breaks
+        print("\n--- Step 4: Stop Triggered. Disabling Control ---")
         FoxPi_Write.FoxPi_Ctrl_Enable_Switch([0])
         print("\033[92mControl safely disabled. Exiting program.\033[0m")
 
