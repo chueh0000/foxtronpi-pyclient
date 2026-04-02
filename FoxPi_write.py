@@ -7,6 +7,7 @@ from udsoncan.services import *
 import datetime
 import os
 import math
+import time
 
 
 class FoxPiWriteDID:
@@ -206,9 +207,13 @@ class FoxPiWriteDID:
         try:
             self.debug_print("Starting FoxPi Reset Sequence... Make sure the vehicle is in Park!")
             self.FoxPi_Ctrl_Enable_Switch([1])
+            time.sleep(0.1)
             self.Driving_Ctrl_toFF()
+            time.sleep(0.1)
             self.Driving_Ctrl_toZero()
+            time.sleep(0.1)
             self.FoxPi_Ctrl_Enable_Switch([0])
+            time.sleep(0.1)
             self.FoxPi_Ctrl_Enable_Switch([1])
             self.debug_print("FoxPi Reset Sequence completed.")
         except Exception as e:
