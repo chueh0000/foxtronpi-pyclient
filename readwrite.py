@@ -70,15 +70,17 @@ def main():
             # --- READ ---
             try:
                 # Fetch the dictionary of parsed physical values
-                current_status = FoxPi_Read.FoxPi_Driving_Ctrl()
+                driving_ctrl_status = FoxPi_Read.FoxPi_Driving_Ctrl()
                 time.sleep(0.1)
-                current_status = FoxPi_Read.FoxPi_WheelSpeed()
+                motion_status = FoxPi_Read.FoxPi_Motion_Status()
+                time.sleep(0.1)
+                motor_status = FoxPi_Read.FoxPi_Motor_Status()
                 
                 # Print a clean, formatted summary of the key driving parameters
-                print(f"\033[96m[Vehicle Status]\033[0m TargetSpd: {current_status['Spd']} kph | "
-                      f"TargetSpd_A: {current_status['Spd_A']} | "
-                      f"RR_WhlSpeed: {current_status['RR_WhlSpeed']} | "
-                      f"RR_WhlSpeed_V: {current_status['RR_WhlSpeed_V']}")
+                print(f"\033[96m[Vehicle Status]\033[0m TargetSpd: {driving_ctrl_status['Spd']} kph | "
+                      f"TargetSpd_A: {driving_ctrl_status['Spd_A']} | "
+                      f"VehicleSpeed: {motion_status['VehicleSpeed']} | "
+                      f"TqSource: {motor_status['TqSource']}")
             except Exception as e:
                 print(f"\033[91mError reading data: {e}\033[0m")
             
