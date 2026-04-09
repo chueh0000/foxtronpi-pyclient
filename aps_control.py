@@ -73,9 +73,9 @@ def read_vehicle_data(FoxPi_Read):
     """Helper function to keep the continuous reading logic clean."""
     try:
         driving_ctrl_status = FoxPi_Read.FoxPi_Driving_Ctrl()
-        time.sleep(0.5)
+        time.sleep(0.4)
         motion_status = FoxPi_Read.FoxPi_Motion_Status()
-        time.sleep(0.5)
+        time.sleep(0.4)
         motor_status = FoxPi_Read.FoxPi_Motor_Status()
         
         # Displaying APSSpeedCMD instead of TargetSpd for this specific mode
@@ -132,7 +132,7 @@ def main():
                 speed_changed = False
             
             read_vehicle_data(FoxPi_Read)
-            time.sleep(0.1) 
+            time.sleep(0.1)
             
         print("\n\n--- Step 4: Stop Triggered. Decelerating... ---")
         while current_speed > 0:
@@ -141,17 +141,14 @@ def main():
             FoxPi_Write.FoxPi_Driving_Ctrl(aps_values)
             print(f"\033[93mDecelerating... Target Speed: {current_speed} km/h\033[0m")
             
-            for _ in range(5): 
-                read_vehicle_data(FoxPi_Read)
-                time.sleep(0.1)
+            read_vehicle_data(FoxPi_Read)
+            time.sleep(0.01)
                 
         print("\n\n--- Step 5: Putting Vehicle in Park ---")
+        time.sleep(2)
         aps_values[12] = PARK_SHIFT_VALUE 
         FoxPi_Write.FoxPi_Driving_Ctrl(aps_values)
-        
-        for _ in range(10): 
-            read_vehicle_data(FoxPi_Read)
-            time.sleep(0.1)
+        time.sleep(1)
             
         print("\n\n--- Step 6: Disabling Control ---")
         disable_APS_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
