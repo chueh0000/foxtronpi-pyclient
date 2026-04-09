@@ -108,8 +108,6 @@ def main():
         aps_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, DRIVE_SHIFT_VALUE, 0]
         FoxPi_Write.FoxPi_Driving_Ctrl(aps_values)
         time.sleep(1)
-        FoxPi_Write.FoxPi_Reset_Sequence()
-        time.sleep(1)
         
         print("\n--- Step 3: Starting APS Speed Control ---")
         print("\033[93m*** CONTROLS ***\033[0m")
