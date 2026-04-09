@@ -44,6 +44,9 @@ def main():
         put_in_Drive_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 0]
         FoxPi_Write.FoxPi_Driving_Ctrl(put_in_Drive_values)
         time.sleep(1)
+        disable_APS_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+        FoxPi_Write.FoxPi_Driving_Ctrl(disable_APS_values)
+        time.sleep(1)
         FoxPi_Write.FoxPi_Reset_Sequence()
         time.sleep(1)
         
