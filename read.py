@@ -49,10 +49,14 @@ with Client(uds_connection, request_timeout=4, config=get_uds_client()) as clien
             continue
 
         excute = RID_map.get(RID)
-        if  RID==0:
+        if RID==0:
             break
         elif excute:
-            for i,j in excute().items():
-                print(f"{i}: {j}")
+            result = excute()
+            if isinstance(result, dict):
+                for i, j in result.items():
+                    print(f"{i}: {j}")
+            else:
+                print(f"\033[92m{result}\033[0m")
         else:
             print("\033[91mInvalid input. Please enter a number between 1 to 18.\033[0m")
