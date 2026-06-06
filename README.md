@@ -62,11 +62,11 @@ sudo apt install python3 python3-venv python3-pip
 
 ##  <img src="https://img.icons8.com/fluency/28/maintenance.png" width="24"/> Installation and setup the system requirements packages
 ### 1. Clone the repository
-First,Open the CMD and type in the `wsl`.
+First, Open the CMD and type in `wsl`.
 
 Then, enter the following command after WSL starts:
 ```bash
-git clone --branch main https://github.com/foxtron-ev/foxtronpi-pyclient
+git clone --branch main https://github.com/chueh0000/foxtronpi-pyclient
 ```
 
 ### 2. Enter the project folder
@@ -74,23 +74,46 @@ git clone --branch main https://github.com/foxtron-ev/foxtronpi-pyclient
 cd foxtronpi-pyclient
 ```
 
-### 3. Create a virtual environment folder called Pi(You may choose a different name)
-```bash
-python3 -m venv Pi
-```
+### 3. Set up and Activate the Python Virtual Environment
+We support two methods to manage the Python environment:
 
-### 4. Activate the virtual environment
-```bash
-source Pi/bin/activate
-```
+#### Method A: Using `direnv` (Recommended - Automated)
+Using `direnv` automatically activates and manages your Python environment when you enter the project directory.
 
-### 5. Install the package requirements
+1. **Install `direnv`**:
+   - Linux / WSL (Ubuntu):
+     ```bash
+     sudo apt update
+     sudo apt install direnv
+     ```
+2. **Hook `direnv` to your shell**:
+   Follow the [direnv installation instructions](https://direnv.net/docs/hook.html) to add it to your shell configuration (e.g., `~/.bashrc`):
+   ```bash
+   # Add this line to your shell configuration file
+   eval "$(direnv hook bash)"
+   ```
+3. **Allow `direnv` in the project folder**:
+   ```bash
+   direnv allow
+   ```
+   This will automatically detect the `.envrc` configuration and set up a virtual environment.
+
+#### Method B: Manual Virtual Environment (Fallback)
+If you prefer not to use `direnv`, you can configure and activate it manually:
+
+1. **Create the virtual environment folder `Pi`**:
+   ```bash
+   python3 -m venv Pi
+   ```
+2. **Activate the virtual environment**:
+   ```bash
+   source Pi/bin/activate
+   ```
+
+### 4. Install the package requirements
+Once your environment is active (either via `direnv` or manually), run:
 ```bash
 pip install -r requirements.txt
-```
-### 6. Install cryptography
-```bash
-pip install cryptography
 ```
 
 ## <img src="https://img.icons8.com/fluency/28/console.png" width="22"/> Execution Method 

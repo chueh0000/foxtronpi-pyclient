@@ -1,8 +1,13 @@
 Pi/
 __pycache__/
 *.build/
-Pi/
 client_config.build/
 common.build/
-__pycache__/
 *.so
+.DS_Store
+
+# direnv
+.direnv/
+.envrc.local
+
+.DS_Store

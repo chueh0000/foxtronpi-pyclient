@@ -34,19 +34,26 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
 
 ### Prerequisites
 - **Architecture**: x86-64 (AMD64) for real vehicle connection; ARM support is provided for GUI development via mock data.
-- **OS**: Linux (Ubuntu 22.04 recommended), macOS, or WSL2.
-- **Python**: 3.10+ recommended.
+- **OS**: Linux (Ubuntu 22.04 recommended) or WSL2.
+- **Python**: 3.10.
 
 ### Setup
-1. **Create Virtual Environment**:
-   ```bash
-   python3 -m venv Pi
-   source Pi/bin/activate
-   ```
+1. **Activate Virtual Environment**:
+   - **Using `direnv` (Recommended)**:
+     If you have `direnv` installed and hooked to your shell, simply run:
+     ```bash
+     direnv allow
+     ```
+     This automatically creates and activates a Python 3.10 virtual environment in the `.direnv/` folder when you enter the directory.
+   - **Manually**:
+     ```bash
+     python3 -m venv Pi
+     source Pi/bin/activate
+     ```
 2. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+     ```bash
+     pip install -r requirements.txt
+     ```
 
 ### Execution
 - **Launch Real-time Dashboard**:
