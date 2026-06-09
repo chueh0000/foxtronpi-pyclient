@@ -2,6 +2,8 @@
 
 This is a Python-based diagnostic and control client for FoxtronEV vehicles (specifically the FoxtronPi D31x model). It enables interaction with vehicle ECUs using Diagnostics over IP (DoIP) and Unified Diagnostic Services (UDS).
 
+See [FoxtronPi-Manual](https://chueh0000.github.io/FoxtronPi-Manual/) for detailed instructions on FoxtronPi.
+
 > [!IMPORTANT]
 > **Python 3.10 is strictly required** for direct vehicle connection because the precompiled diagnostic configuration and client configuration library files (`*.so`) are built specifically for CPython 3.10 on x86-64 Linux.
 
