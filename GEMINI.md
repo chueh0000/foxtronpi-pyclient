@@ -15,27 +15,36 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
 - **Architecture**:
   - **Library Layer**: Modular Python files (`FoxPi_*.py`) that abstract UDS DIDs and data conversion logic.
   - **GUI Layer**: A modern dashboard (`dashboard/`) with real-time gauges, interactive controls, and dynamic plots.
-  - **CLI Layer**: Interactive scripts (`read.py`, `write.py`) for manual testing and demonstration.
-  - **Config/Common**: Shared connection settings and UDS client configurations.
+  - **CLI Layer**: Interactive scripts (`read.py`, `write.py`, `readwrite.py`, `aps_control.py`) for manual testing, driving control simulation, and demonstration.
+  - **Config/Common**: Shared connection settings and UDS client configurations precompiled into Python 3.10 shared object files (`client_config.cpython-310-x86_64-linux-gnu.so`, `common.cpython-310-x86_64-linux-gnu.so`).
 
 ## Key Components
 
 | File/Folder | Description |
 |------|-------------|
-| `dashboard/` | Source code for the real-time PyQt6/QML dashboard application. |
+| `dashboard/` | Source code for the real-time PyQt6/QML dashboard application (Under Development / WIP). |
 | `FoxPi_read.py` | Library for reading vehicle Data Identifiers (DIDs) like speed, battery, etc. |
 | `FoxPi_write.py` | Library for writing vehicle DIDs to control signals like acceleration and lamps. |
 | `FoxPi_DTC.py` | Library for reading and clearing Diagnostic Trouble Codes. |
 | `FoxPi_TP.py` | Helper for sending TesterPresent requests to keep the diagnostic session alive. |
 | `read.py` | Interactive CLI for reading vehicle signals. |
 | `write.py` | Interactive CLI for writing vehicle control parameters. |
+| `readwrite.py` | Sample CLI script: Combined read/write loop with vehicle initialization sequences (Experimental purpose only). |
+| `aps_control.py` | Interactive CLI tool: Driving and speed controls using keyboard arrow keys. |
 
 ## Building and Running
 
 ### Prerequisites
 - **Architecture**: x86-64 (AMD64) for real vehicle connection; ARM support is provided for GUI development via mock data.
 - **OS**: Linux (Ubuntu 22.04 recommended) or WSL2.
-- **Python**: 3.10.
+- **Python**: 3.10 (strictly required due to precompiled `.so` binary dependencies).
+
+### System GUI Dependencies (Linux / WSL2)
+Since PySide6/Qt relies on system graphics and windowing packages, run the following command if you encounter GUI startup/rendering issues:
+```bash
+sudo apt update
+sudo apt install libegl1 libgl1-mesa-glx libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 -y
+```
 
 ### Setup
 1. **Activate Virtual Environment**:
@@ -56,7 +65,7 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
      ```
 
 ### Execution
-- **Launch Real-time Dashboard**:
+- **Launch Real-time Dashboard (Under Development)**:
   ```bash
   python3 dashboard/main.py
   ```
@@ -67,6 +76,10 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
 - **Write Control Data (CLI)**:
   ```bash
   python3 write.py
+  ```
+- **Run Keyboard driving controls (CLI)**:
+  ```bash
+  python3 aps_control.py
   ```
 
 ## Real-time Dashboard Features
@@ -80,8 +93,20 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
 
 - **Diagnostic Sessions**: Writing to vehicle DIDs typically requires switching to the `extendedDiagnosticSession` and performing a security unlock (`unlock_security_access(1)`).
 - **TesterPresent**: Use `FoxPiTP` to maintain the session if performing multiple operations that require an active diagnostic session.
-- **IP/Logical Addressing**: Connection parameters are managed in `client_config.so`. Ensure `DOIP_SERVER_IP` and `DoIP_LOGICAL_ADDRESS` match the vehicle's gateway configuration.
+- **IP/Logical Addressing**: Connection parameters are managed in `client_config.cpython-310-x86_64-linux-gnu.so`. Ensure `DOIP_SERVER_IP` and `DoIP_LOGICAL_ADDRESS` match the vehicle's gateway configuration.
+- **Vehicle Connection Standard**:
+  Any connection wrapper or client connection sequence must strictly follow the standard initialization established in `aps_control.py`, `read.py`, and `write.py` using `udsoncan` standard `Client` context managers:
+  ```python
+  doip_client = DoIPClient(DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS, protocol_version=3)
+  uds_connection = DoIPClientUDSConnector(doip_client)
+  with Client(uds_connection, request_timeout=4, config=get_uds_client()) as client:
+      # Perform diagnostic functions
+  ```
+- **Dashboard Status**: Note that the real-time QML Dashboard feature is currently a work-in-progress (under development) and is not yet production-ready.
+- **Experimental Code**: The `readwrite.py` script is strictly for temporary experimental usage only. Do not rely on it for official driving or configuration routines.
 
 ## TODOs
 - [ ] Implement automated testing suite for library functions using a DoIP/UDS simulator.
 - [ ] Enhance Dashboard with more detailed visualizations.
+- [ ] Support custom target IP configuration directly via Dashboard UI.
+
