@@ -27,6 +27,7 @@ A Python-based diagnostic and control client for FoxtronEV vehicles (specificall
 | `scripts/read.py` | Interactive CLI for reading vehicle signals. |
 | `scripts/write.py` | Interactive CLI for writing vehicle control parameters. |
 | `scripts/aps_control.py` | Interactive keyboard-driving control console. |
+| `scripts/steering_control.py` | Interactive keyboard-steering control console. |
 | `scripts/readwrite.py` | Combined continuous driving control simulation (Experimental). |
 
 ## Building and Running
@@ -81,6 +82,10 @@ sudo apt install libegl1 libgl1-mesa-glx libxkbcommon-x11-0 libxcb-cursor0 libxc
 - **Run Keyboard driving controls (CLI)**:
   ```bash
   python3 scripts/aps_control.py
+  ```
+- **Run Keyboard steering controls (CLI)**:
+  ```bash
+  python3 scripts/steering_control.py
   ```
 
 ## Real-time Dashboard Features

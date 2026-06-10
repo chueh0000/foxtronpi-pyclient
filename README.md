@@ -13,7 +13,7 @@ See [FoxtronPi-Manual](https://chueh0000.github.io/FoxtronPi-Manual/) for detail
 |----------------|------------------------------|
 | `foxtronpi_client/` | Core package containing UDS/DoIP wrappers (`FoxPi_read.py`, `FoxPi_write.py`, `FoxPi_DTC.py`, `FoxPi_TP.py`) and precompiled extension binaries (`client_config...so`, `common...so`). |
 | `dashboard/` | Source code for the real-time PyQt6/QML dashboard application (Under Development / WIP). |
-| `scripts/` | Interactive CLI test/simulation scripts (`read.py`, `write.py`, `aps_control.py`, `readwrite.py`). |
+| `scripts/` | Interactive CLI test/simulation scripts (`read.py`, `write.py`, `aps_control.py`, `steering_control.py`, `readwrite.py`). |
 | `requirements.txt` | Package dependencies. |
 | `README.md` | Project Documentation. |
 
@@ -154,7 +154,13 @@ Allows driving controls using arrow keys on your keyboard:
 python3 scripts/aps_control.py
 ```
 
-### 5. Combined Read & Write Loop (CLI - Experimental Only)
+### 5. Interactive Keyboard Steering Control (CLI)
+Allows steering wheel angle control using the Left and Right arrow keys on your keyboard:
+```bash
+python3 scripts/steering_control.py
+```
+
+### 6. Combined Read & Write Loop (CLI - Experimental Only)
 Runs a continuous read/write control loop with a vehicle reset sequence. Note that `readwrite.py` is for **experimental purposes only**.
 ```bash
 python3 scripts/readwrite.py
