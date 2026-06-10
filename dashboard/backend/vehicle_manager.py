@@ -72,11 +72,9 @@ class VehicleManager(QObject):
     def _async_connect(self):
         try:
             # Dynamic imports to prevent crash on ARM where common/client_config may be missing
-            from FoxPi_read import FoxPiReadDID
-            from FoxPi_write import FoxPiWriteDID
-            from FoxPi_TP import FoxPiTP
-            from common import get_uds_client
-            from client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
+            from foxtronpi_client import FoxPiReadDID, FoxPiWriteDID, FoxPiTP
+            from foxtronpi_client.common import get_uds_client
+            from foxtronpi_client.client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
 
             self.client = get_uds_client(DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS)
             self.reader = FoxPiReadDID(self.client)
