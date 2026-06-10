@@ -9,21 +9,13 @@ See [FoxtronPi-Manual](https://chueh0000.github.io/FoxtronPi-Manual/) for detail
 
 ## 📁 Project Contents
 
-| File Name | Description |
+| File/Folder | Description |
 |----------------|------------------------------|
-| `FoxPi_read.py`  | Function Library to Read Vehicle Signal Status (e.g., vehicle speed, lights, battery, motor, etc.) |
-| `FoxPi_write.py` | Function Library to Control Vehicle Signals (e.g., acceleration, target speed, lights, gear shifting) |
-| `FoxPi_DTC.py`     | Function Library to Read and clear Diagnostic Trouble Codes (DTCs) |
-| `FoxPi_TP.py`     | Function Library to send the TesterPresent service request and keep the connection alive |
-| `client_config.cpython-310-x86_64-linux-gnu.so`     | Precompiled connection configuration binary |
-| `common.cpython-310-x86_64-linux-gnu.so`     | Precompiled diagnostic configuration binary |
-| `read.py` | Sample CLI script: Read vehicle signal status |
-| `write.py` | Sample CLI script: Write vehicle control parameters |
-| `readwrite.py` | Sample CLI script: Combined read and write continuous driving loop (Experimental purpose only) |
-| `aps_control.py` | Interactive CLI tool: Controls driving speed using keyboard arrow keys |
-| `dashboard/` | Source code for the real-time PyQt6/QML dashboard application (Under Development / WIP) |
-| `requirements.txt` | Package dependencies |
-| `README.md`     | Project Documentation |
+| `foxtronpi_client/` | Core package containing UDS/DoIP wrappers (`FoxPi_read.py`, `FoxPi_write.py`, `FoxPi_DTC.py`, `FoxPi_TP.py`) and precompiled extension binaries (`client_config...so`, `common...so`). |
+| `dashboard/` | Source code for the real-time PyQt6/QML dashboard application (Under Development / WIP). |
+| `scripts/` | Interactive CLI test/simulation scripts (`read.py`, `write.py`, `aps_control.py`, `readwrite.py`). |
+| `requirements.txt` | Package dependencies. |
+| `README.md` | Project Documentation. |
 
 ---
 
@@ -133,30 +125,33 @@ python3 dashboard/main.py
 
 ### 2. Read Vehicle Status (CLI)
 ```bash
-python3 read.py
+python3 scripts/read.py
 ```
 
 ### 3. Write Vehicle Control Parameters (CLI)
 ```bash
-python3 write.py
+python3 scripts/write.py
 ```
 
 ### 4. Interactive Keyboard Drive Control (CLI)
 Allows driving controls using arrow keys on your keyboard:
 ```bash
-python3 aps_control.py
+python3 scripts/aps_control.py
 ```
 
 ### 5. Combined Read & Write Loop (CLI - Experimental Only)
 Runs a continuous read/write control loop with a vehicle reset sequence. Note that `readwrite.py` is for **experimental purposes only**.
 ```bash
-python3 readwrite.py
+python3 scripts/readwrite.py
 ```
 
 > [!IMPORTANT]
 > **Vehicle Connection Standard**:
-> All components connecting to the vehicle must strictly follow the connection method established in `aps_control.py`, `read.py`, and `write.py`. This uses the `udsoncan` standard `Client` context manager:
+> All components connecting to the vehicle must strictly follow the connection method established in `scripts/aps_control.py`, `scripts/read.py`, and `scripts/write.py`. This uses the `udsoncan` standard `Client` context manager:
 > ```python
+> from foxtronpi_client.common import get_uds_client
+> from foxtronpi_client.client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
+>
 > doip_client = DoIPClient(DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS, protocol_version=3)
 > uds_connection = DoIPClientUDSConnector(doip_client)
 > with Client(uds_connection, request_timeout=4, config=get_uds_client()) as client:
