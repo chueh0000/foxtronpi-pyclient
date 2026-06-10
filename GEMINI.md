@@ -53,7 +53,11 @@ sudo apt install libegl1 libgl1-mesa-glx libxkbcommon-x11-0 libxcb-cursor0 libxc
      This automatically creates and activates a Python 3.10 virtual environment in the `.direnv/` folder when you enter the directory.
    - **Manually**:
      ```bash
+     # For Ubuntu 22.04:
      python3 -m venv Pi
+     # For other versions (explicit Python 3.10):
+     python3.10 -m venv Pi
+
      source Pi/bin/activate
      ```
 2. **Install Dependencies**:

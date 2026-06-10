@@ -53,10 +53,20 @@ wsl
 A Python Virtual Environment helps isolate dependencies and prevents the global development environment from conflicts when working on multiple projects.
 
 ### 1. Install Python3 and Venv (If not already installed)
+On Ubuntu 22.04, Python 3.10 is the default version. You can install it using:
 ```bash
 sudo apt update
 sudo apt install python3 python3-venv python3-pip -y
 ```
+
+> [!IMPORTANT]
+> If you are on a different Ubuntu/Linux version (e.g. Ubuntu 24.04, which defaults to Python 3.12), you must explicitly install and use Python 3.10 to prevent loading errors with the precompiled `.so` binary dependencies. You can install Python 3.10 using the Deadsnakes PPA:
+> ```bash
+> sudo add-apt-repository ppa:deadsnakes/ppa
+> sudo apt update
+> sudo apt install python3.10 python3.10-venv python3.10-dev -y
+> ```
+
 
 ##  <img src="https://img.icons8.com/fluency/28/maintenance.png" width="24"/> Installation and Setup of System Dependencies
 
@@ -99,9 +109,14 @@ Using `direnv` automatically activates and manages your Python environment when 
 If you prefer not to use `direnv`, you can configure and activate it manually:
 
 1. **Create the virtual environment folder `Pi`**:
-   ```bash
-   python3 -m venv Pi
-   ```
+   - For Ubuntu 22.04:
+     ```bash
+     python3 -m venv Pi
+     ```
+   - For other versions (explicit Python 3.10):
+     ```bash
+     python3.10 -m venv Pi
+     ```
 2. **Activate the virtual environment**:
    ```bash
    source Pi/bin/activate
