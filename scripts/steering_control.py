@@ -144,6 +144,21 @@ def main():
                 time.sleep(0.05)
                 continue
                 
+            # Failsafe: Check for critical faults (EPS_Flt != 0 or EPS_AOI_Ctrl == 3: Permanent Fail)
+            if eps_flt != 0 or eps_aoi == 3:
+                print(f"\n\033[91m[EMERGENCY] Critical EPS Fault detected! (EPS_Flt={eps_flt}, EPS_AOI_Ctrl={eps_aoi}). Triggering emergency shutdown...\033[0m")
+                try:
+                    # Immediately command all control parameters to zero
+                    disable_values = [0] * 14
+                    FoxPi_Write.FoxPi_Driving_Ctrl(disable_values)
+                    time.sleep(0.2)
+                    # Disable control enable switch
+                    FoxPi_Write.FoxPi_Ctrl_Enable_Switch([0])
+                    print("\033[92mEmergency shutdown complete. Control disabled.\033[0m")
+                except Exception as ex:
+                    print(f"\033[91mError during emergency shutdown: {ex}\033[0m")
+                sys.exit(1)
+                
             # Log keypress updates
             if angle_changed:
                 print(f"\n\033[92m>>> Target Steering Angle Updated: {target_angle}° <<<\033[0m")
