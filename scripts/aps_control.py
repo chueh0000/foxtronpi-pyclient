@@ -1,18 +1,19 @@
 import time
+import os
 import sys
 import threading
 import tty
 import termios
 
+# Add the parent directory to the Python path to access package modules
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from doipclient import DoIPClient
 from doipclient.connectors import DoIPClientUDSConnector
-from common import get_uds_client
-from client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
 from udsoncan.client import Client
-
-# Import both your Write and Read classes
-from FoxPi_write import FoxPiWriteDID 
-from FoxPi_read import FoxPiReadDID 
+from foxtronpi_client.common import get_uds_client
+from foxtronpi_client.client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
+from foxtronpi_client import FoxPiWriteDID, FoxPiReadDID
 
 # Globals for control state
 current_speed = 0

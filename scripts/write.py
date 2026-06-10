@@ -1,10 +1,16 @@
+import os
+import sys
+
+# Add the parent directory to the Python path to access package modules
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from doipclient import DoIPClient
 from doipclient.connectors import DoIPClientUDSConnector
-from common import get_uds_client
-from client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
 from udsoncan.client import Client
 from udsoncan.services import *
-from FoxPi_write import FoxPiWriteDID
+from foxtronpi_client.common import get_uds_client
+from foxtronpi_client.client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
+from foxtronpi_client import FoxPiWriteDID
 
 
 
