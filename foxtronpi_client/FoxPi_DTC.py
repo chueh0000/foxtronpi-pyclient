@@ -2,8 +2,6 @@ from doipclient import DoIPClient
 from doipclient.connectors import DoIPClientUDSConnector
 from udsoncan.client import Client
 from udsoncan.services import ReadDTCInformation
-from common import get_uds_client
-from client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS, DoIP_FUNCTION_ADDRESS
 
 class FoxPiDTC:
 
@@ -12,6 +10,7 @@ class FoxPiDTC:
         self.doip_client = doip_client
 
     def Read_DTCs(self):
+        from .client_config import DoIP_LOGICAL_ADDRESS, DoIP_FUNCTION_ADDRESS
         self.doip_client._ecu_logical_address = DoIP_FUNCTION_ADDRESS # change to the functional address to read all DTCs
         resp = self.client.read_dtc_information(ReadDTCInformation.Subfunction.reportDTCByStatusMask, status_mask=0x0F) # 0x0F to read problem DTC 
         print(f"response: {resp}")
@@ -32,6 +31,7 @@ class FoxPiDTC:
             return cfg
     
     def Clear_DTCs(self):
+        from .client_config import DoIP_LOGICAL_ADDRESS, DoIP_FUNCTION_ADDRESS
         self.doip_client._ecu_logical_address = DoIP_FUNCTION_ADDRESS # change to the functional address to clear all DTCs
         try:
             resp = self.client.clear_dtc(group=0xFFFFFF) # 0xFFFFFF= clear all DTC

@@ -11,3 +11,8 @@ common.build/
 .envrc.local
 
 .DS_Store
+
+# Python packaging
+*.egg-info/
+build/
+dist/

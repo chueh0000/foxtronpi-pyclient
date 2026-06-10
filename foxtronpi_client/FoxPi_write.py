@@ -1,7 +1,5 @@
 from doipclient import DoIPClient
 from doipclient.connectors import DoIPClientUDSConnector
-from common import get_uds_client
-from client_config import DOIP_SERVER_IP, DoIP_LOGICAL_ADDRESS
 from udsoncan.client import Client
 from udsoncan.services import *
 import datetime
